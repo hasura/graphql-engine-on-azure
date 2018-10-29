@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "server_name": {
+      "value": "skm-depl-1"
+    },
+    "admin_user": {
+      "value": "hasura"
+    },
+    "admin_password": {
+      "value": "Hello123###"
+    },
+    "encoded_admin_password": {
+      "value": "Hello123%23%23%23"
+    },
+    "database_name": {
+      "value": "hasura"
+    },
+    "container_name": {
+      "value": "hasura-graphql-engine"
+    },
+    "dns_name": {
+      "value": "hge-11"
+    },
+    "image_name": {
+      "value": "hasura/graphql-engine:v1.0.0-alpha27"
+    }
+  }
+}
