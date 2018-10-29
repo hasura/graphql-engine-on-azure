@@ -1,7 +1,5 @@
 # Hasura GraphQL Engine on Azure
 
-# Azure API Management Service
-
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/hasura/graphql-engine-on-azure/master/arm/azuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
