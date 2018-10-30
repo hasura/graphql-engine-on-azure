@@ -23,14 +23,14 @@
     },
     "adminPassword": {
       "type": "SecureString",
-      "defaultValue": "",
+      "defaultValue": null,
       "metadata": {
         "description": "Admin password for Postgres. Must be at least 8 characters in length, must contain characters from three of the following categories – English uppercase letters, English lowercase letters, numbers (0-9), and non-alphanumeric characters (!, $, #, %, etc.)."
       }
     },
     "urlEncodedAdminPassword": {
       "type": "SecureString",
-      "defaultValue": "",
+      "defaultValue": null,
       "metadata": {
         "description": "If you have special characters in the password (!, $, #, %, etc.), URL encode and paste it here. Otherwise, just re-type the password."
       }
