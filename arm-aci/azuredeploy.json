@@ -5,6 +5,8 @@
     "name": {
       "defaultValue": null,
       "type": "string",
+      "minLength": 5,
+      "maxLength": 63,
       "metadata": {
         "description": "Unique name for the deployment, used as the DNS label also."
       }
