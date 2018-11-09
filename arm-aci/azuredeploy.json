@@ -100,6 +100,7 @@
         }
       },
       "sku": {
+        "name": "[concat(if(equals(parameters('databaseSKUTier'), 'Basic'), 'B', if(equals(parameters('databaseSKUTier'), 'GeneralPurpose'), 'GP', if(equals(parameters('databaseSKUTier'), 'MemoryOptimized'), 'MO', 'X'))), '_Gen5_', parameters('databaseSKUCapacity') )]",
         "tier": "[parameters('databaseSKUTier')]",
         "capacity": "[parameters('databaseSKUCapacity')]",
         "size": "[parameters('databaseSKUSizeInMB')]",
