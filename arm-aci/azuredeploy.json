@@ -32,7 +32,7 @@
       ],
       "defaultValue": "GeneralPurpose",
       "metadata": {
-        "description": "Azure database for PostgreSQL pricing SKU tier"
+        "description": "Azure database for PostgreSQL pricing SKU tier."
       }
     },
     "databaseSKUCapacity": {
@@ -46,7 +46,7 @@
       ],
       "defaultValue": 2,
       "metadata": {
-        "description": "Azure database for PostgreSQL SKU capacity - number of cores"
+        "description": "Azure database for PostgreSQL SKU capacity - number of cores."
       }
     },
     "databaseSKUSizeInMB": {
@@ -55,7 +55,7 @@
       "maxValue": 4096000,
       "defaultValue": 10240,
       "metadata": {
-        "description": "Azure database for PostgreSQL SKU storage size"
+        "description": "Azure database for PostgreSQL SKU storage size."
       }
     },
     "administratorLoginPassword": {
