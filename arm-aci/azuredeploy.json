@@ -4,13 +4,13 @@
   "parameters": {
     "name": {
       "defaultValue": null,
-      "type": "String",
+      "type": "string",
       "metadata": {
         "description": "Unique name for the deployment, used as the DNS label also."
       }
     },
     "postgresVersion": {
-      "type": "String",
+      "type": "string",
       "defaultValue": "10",
       "allowedValues": [
         "10",
@@ -21,16 +21,55 @@
         "description": "Version of PostgreSQL Server to be provisioned."
       }
     },
-    "adminPassword": {
-      "type": "SecureString",
-      "defaultValue": null,
+    "databaseSKUTier": {
+      "type": "string",
+      "allowedValues": [
+        "Basic",
+        "GeneralPurpose",
+        "MemoryOptimized"
+      ],
+      "defaultValue": "GeneralPurpose",
       "metadata": {
-        "description": "Admin password for Postgres. Must be at least 8 characters in length, must contain characters from three of the following categories – English uppercase letters, English lowercase letters, numbers (0-9), and non-alphanumeric characters (!, $, #, %, etc.)."
+        "description": "Azure database for PostgreSQL pricing SKU tier"
+      }
+    },
+    "databaseSKUCapacity": {
+      "type": "int",
+      "allowedValues": [
+        2,
+        4,
+        8,
+        16,
+        32
+      ],
+      "defaultValue": 2,
+      "metadata": {
+        "description": "Azure database for PostgreSQL SKU capacity - number of cores"
+      }
+    },
+    "databaseSKUSizeInMB": {
+      "type": "int",
+      "minValue": 5210,
+      "maxValue": 4096000,
+      "defaultValue": 10240,
+      "metadata": {
+        "description": "Azure database for PostgreSQL SKU storage size"
+      }
+    },
+    "administratorLoginPassword": {
+      "type": "securestring",
+      "defaultValue": null,
+      "minLength": 8,
+      "maxLength": 128,
+      "metadata": {
+        "description": "Administrator password for Postgres. Must be at least 8 characters in length, must contain characters from three of the following categories – English uppercase letters, English lowercase letters, numbers (0-9), and non-alphanumeric characters (!, $, #, %, etc.)."
       }
     },
     "urlEncodedAdminPassword": {
-      "type": "SecureString",
+      "type": "securestring",
       "defaultValue": null,
+      "minLength": 8,
+      "maxLength": 128,
       "metadata": {
         "description": "If you have special characters in the password (!, $, #, %, etc.), URL encode and paste it here. Otherwise, just re-type the password."
       }
@@ -43,7 +82,7 @@
     "firewallRuleName": "allow-all-azure-firewall-rule",
     "containerGroupName": "[concat(parameters('name'), '-container-group')]",
     "containerName": "hasura-graphql-engine",
-    "containerImage": "hasura/graphql-engine:v1.0.0-alpha27"
+    "containerImage": "hasura/graphql-engine:v1.0.0-alpha28"
   },
   "resources": [
     {
@@ -52,9 +91,19 @@
       "type": "Microsoft.DBforPostgreSQL/servers",
       "apiVersion": "2017-12-01",
       "properties": {
+        "createMode": "Default",
         "version": "[parameters('postgresVersion')]",
         "administratorLogin": "hasura",
-        "administratorLoginPassword": "[parameters('adminPassword')]"
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+        "storageProfile": {
+          "storageMB": "[parameters('databaseSKUSizeInMB')]"
+        }
+      },
+      "sku": {
+        "tier": "[parameters('databaseSKUTier')]",
+        "capacity": "[parameters('databaseSKUCapacity')]",
+        "size": "[parameters('databaseSKUSizeInMB')]",
+        "family": "Gen5"
       },
       "resources": [
         {
@@ -89,18 +138,22 @@
       "name": "[variables('containerGroupName')]",
       "apiVersion": "2018-06-01",
       "location": "[resourceGroup().location]",
-      "tags": {},
-      "scale": null,
       "properties": {
         "containers": [
           {
             "name": "[variables('containerName')]",
             "properties": {
               "image": "[variables('containerImage')]",
+              "command": [
+                "graphql-engine",
+                "serve",
+                "--server-port",
+                "80"
+              ],
               "ports": [
                 {
                   "protocol": "TCP",
-                  "port": 8080
+                  "port": 80
                 }
               ],
               "environmentVariables": [
@@ -123,7 +176,7 @@
           "ports": [
             {
               "protocol": "TCP",
-              "port": 8080
+              "port": 80
             }
           ],
           "type": "Public",
@@ -138,7 +191,7 @@
   ],
   "outputs": {
     "fqdn": {
-      "value": "[concat(reference(resourceId('Microsoft.ContainerInstance/containerGroups', variables('containerGroupName'))).ipAddress.fqdn, ':8080/console')]",
+      "value": "[reference(resourceId('Microsoft.ContainerInstance/containerGroups', variables('containerGroupName'))).ipAddress.fqdn]",
       "type": "string"
     },
     "ipaddress": {
