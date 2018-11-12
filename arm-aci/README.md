@@ -5,6 +5,9 @@ Click the `Deploy` button below to create a Hasura GraphQL Engine container on
 Instances](https://azure.microsoft.com/en-us/services/container-instances/)
 backed by an [Azure Database for
 PostgreSQL](https://azure.microsoft.com/en-us/services/postgresql/) Server.
+For a more detailed step-by-step guide on deplopying individual
+resources to Azure using the CLI, refer to the 
+[documentation](https://docs.hasura.io/1.0/graphql/manual/guides/deployment/azure-container-instances-postgres.html).
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3a%2f%2fraw.githubusercontent.com%2fhasura%2fgraphql-engine-on-azure%2fmaster%2farm-aci%2fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
